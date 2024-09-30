@@ -52,5 +52,11 @@ cp = uavCoveragePlanner(cs);
 % hold off
 
 exportWaypointsPlan(cp,solnInfo,"customCoverage.waypoints");
-mission = uavMission(PlanFile="customCoverage.waypoints",Speed=10,InitialYaw=90);
-show(mission)
+startLocation = [waypoints(1,:)];
+homeLocation = enu2lla(startLocation,Takeoff,"ellipsoid");
+mission = uavMission(PlanFile="customCoverage.waypoints",Speed=10,InitialYaw=90, Frame="LocalENU", HomeLocation=homeLocation);
+% show(mission)
+
+parser = multirotorMissionParser(TransitionRadius=2, TakeoffSpeed=2)
+traj = parse(parser, mission)
+show(traj);
