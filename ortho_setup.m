@@ -1,0 +1,56 @@
+targetUAVElevation = 50;
+
+focalLengthX = 1109;
+focalLengthY = focalLengthX;
+
+imageWidth = 1024;
+imageHeight = 512;
+
+fovHorizontal = 2*atan(imageWidth/(2*focalLengthY));
+fovVertical = 2*atan(imageHeight/(2*focalLengthX));
+
+coverageWidth = (2*targetUAVElevation*tan(fovHorizontal/2))/sin(pi/2 + fovVertical/2);
+
+takeoff = [67.5, 69.5];
+
+regionVertices = [
+    51.2, 61;
+    51.2, -71.5;
+    -74.1, -71.5;
+    -74.1, -16.6;
+    -54.9, 54.2;
+    -51.6, 58.6;
+    -47.9, 61;
+];
+
+landing = [-80, -80];
+
+% For testing correct path setup
+time = 0:30/6:30;
+time_path = [time' regionVertices repmat(targetUAVElevation, size(regionVertices,1), 1)];
+
+cs = uavCoverageSpace(Polygons=regionVertices, UnitWidth=coverageWidth, ReferenceHeight=targetUAVElevation);
+
+% hold on
+% show(cs);
+% title("UAV Coverage Space")
+% hold off
+
+Takeoff = [takeoff 0];
+Landing = [landing 0];
+cp = uavCoveragePlanner(cs);
+[waypoints,solnInfo] = cp.plan(Takeoff,Landing);
+
+% hold on
+% h = animatedline;
+% h.Color = "cyan";
+% h.LineWidth = 3;
+% for i = 1:size(waypoints,1)
+%     addpoints(h,waypoints(i,1),waypoints(i,2));
+%     pause(1);
+% end
+% hold off
+
+exportWaypointsPlan(cp,solnInfo,"customCoverage.waypoints");
+mission = uavMission(PlanFile="customCoverage.waypoints",Speed=10,InitialYaw=90);
+show(mission)
