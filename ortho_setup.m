@@ -77,4 +77,4 @@ elevationTolerance = 15e-2;
 pitchTolerance = 2;
 rollVelocityTolerance = 1e-4;
 
-nthFrame = 20;
+nthFrame = 50;
