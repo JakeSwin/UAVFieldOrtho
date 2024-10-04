@@ -57,16 +57,24 @@ cp = uavCoveragePlanner(cs);
 % mission = uavMission(PlanFile="customCoverage.waypoints",Speed=10,InitialYaw=90, Frame="LocalENU", HomeLocation=[0 0 0]);
 % show(mission)
 
-mission = uavMission(Speed=10,InitialYaw=90, Frame="LocalENU", HomeLocation=Takeoff);
-addTakeoff(mission, 50)
+% mission = uavMission(Speed=10,InitialYaw=90, Frame="LocalENU", HomeLocation=Takeoff);
+% addTakeoff(mission, 50)
+% 
+% for idx = 2:size(waypoints,1)
+%     addWaypoint(mission, waypoints(idx,:));
+% end
+% 
+% addLand(mission, Landing);
+% 
+% 
+% parser = multirotorMissionParser(TransitionRadius=8, TakeoffSpeed=5)
+% traj = parse(parser, mission)
+% show(traj);
 
-for idx = 2:size(waypoints,1)
-    addWaypoint(mission, waypoints(idx,:));
-end
+[positionTbl,rotationTbl,traj] = exampleHelperComputeAndShowUAVTrajectory(waypoints(:,1:2),targetUAVElevation);
 
-addLand(mission, Landing);
+elevationTolerance = 15e-2;
+pitchTolerance = 2;
+rollVelocityTolerance = 1e-4;
 
-
-parser = multirotorMissionParser(TransitionRadius=8, TakeoffSpeed=5)
-traj = parse(parser, mission)
-show(traj);
+nthFrame = 20;
