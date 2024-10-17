@@ -1,10 +1,10 @@
-targetUAVElevation = 50;
+targetUAVElevation = 80;
 
 focalLengthX = 1109;
 focalLengthY = focalLengthX;
 
 imageWidth = 1024;
-imageHeight = 512;
+imageHeight = 1024;
 
 fovHorizontal = 2*atan(imageWidth/(2*focalLengthY));
 fovVertical = 2*atan(imageHeight/(2*focalLengthX));
@@ -29,7 +29,7 @@ landing = [-80, -80];
 time = 0:30/6:30;
 time_path = [time' regionVertices repmat(targetUAVElevation, size(regionVertices,1), 1)];
 
-cs = uavCoverageSpace(Polygons=regionVertices, UnitWidth=coverageWidth, ReferenceHeight=targetUAVElevation);
+cs = uavCoverageSpace(Polygons=regionVertices, UnitWidth=coverageWidth/3, ReferenceHeight=targetUAVElevation);
 
 % hold on
 % show(cs);
@@ -38,7 +38,7 @@ cs = uavCoverageSpace(Polygons=regionVertices, UnitWidth=coverageWidth, Referenc
 
 Takeoff = [takeoff 0];
 Landing = [landing 0];
-cp = uavCoveragePlanner(cs);
+cp = uavCoveragePlanner(cs, Solver="Exhaustive");
 [waypoints,solnInfo] = cp.plan(Takeoff,Landing);
 
 % hold on
@@ -77,4 +77,4 @@ elevationTolerance = 15e-2;
 pitchTolerance = 2;
 rollVelocityTolerance = 1e-4;
 
-nthFrame = 50;
+nthFrame = 100;

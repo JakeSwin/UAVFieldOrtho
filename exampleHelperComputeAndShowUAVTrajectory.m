@@ -23,7 +23,7 @@ function [positionTbl,rotationTbl,traj] = exampleHelperComputeAndShowUAVTrajecto
     figure;
     show(m,ReferenceLocation=referenceLocation);
     grid on
-    parser = multirotorMissionParser(TakeoffSpeed=5,TransitionRadius=15);
+    parser = multirotorMissionParser(TakeoffSpeed=5,TransitionRadius=5);
     traj = parse(parser,m,referenceLocation);
     hold on
     show(traj);
