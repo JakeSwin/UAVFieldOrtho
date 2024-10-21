@@ -10,6 +10,9 @@ persImgResY = size(image,2);
 orthophotoFolderName = "orthophotos";
 mkdir(orthophotoFolderName);
 
+photoFolderName = "photos";
+mkdir(photoFolderName);
+
 numberOfFrames = size(image,4);
 orthophotos = cell(1,numberOfFrames);
 
@@ -24,7 +27,8 @@ for idx=1:numberOfFrames
         targetUAVElevation,meterToPixel,reductionFactor,...
         image(:,:,:,idx),depth(:,:,idx));
     imwrite(orthophotos{idx}/255,fullfile(orthophotoFolderName,"frame_"+string(idx)+".png"));
-    
+    imwrite(image(:,:,:,idx),fullfile(photoFolderName,"frame_"+string(idx)+".png"));
+
     % Update the progress bar
     progress = idx/numberOfFrames;
     waitbar(progress,f,sprintf("Creating files for frame [%d/%d] - %.2f%%",idx,numberOfFrames,progress*100));

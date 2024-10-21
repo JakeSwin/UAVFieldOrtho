@@ -1,10 +1,10 @@
-targetUAVElevation = 50;
+targetUAVElevation = 80;
 
 focalLengthX = 1109;
 focalLengthY = focalLengthX;
 
 imageWidth = 1024;
-imageHeight = 512;
+imageHeight = 1024;
 
 fovHorizontal = 2*atan(imageWidth/(2*focalLengthY));
 fovVertical = 2*atan(imageHeight/(2*focalLengthX));
@@ -13,23 +13,38 @@ coverageWidth = (2*targetUAVElevation*tan(fovHorizontal/2))/sin(pi/2 + fovVertic
 
 takeoff = [67.5, 69.5];
 
+% regionVertices = [
+%     51.2, 61;
+%     51.2, -71.5;
+%     -74.1, -71.5;
+%     -74.1, -16.6;
+%     -54.9, 54.2;
+%     -51.6, 58.6;
+%     -47.9, 61;
+% ];
+
 regionVertices = [
-    51.2, 61;
-    51.2, -71.5;
-    -74.1, -71.5;
-    -74.1, -16.6;
-    -54.9, 54.2;
-    -51.6, 58.6;
-    -47.9, 61;
+    55, 66;
+    55, -74.5;
+    -78.1, -74.5;
+    -78.1, 66;
 ];
 
-landing = [-80, -80];
+% regionVertices = [
+%     51.2, 61;
+%     51.2, -71.5;
+%     -74.1, -71.5;
+%     -74.1, -16.6;
+%     -74.1, 61;
+% ];
+
+landing = [-80, 0];
 
 % For testing correct path setup
-time = 0:30/6:30;
+time = 0:30/3:30;
 time_path = [time' regionVertices repmat(targetUAVElevation, size(regionVertices,1), 1)];
 
-cs = uavCoverageSpace(Polygons=regionVertices, UnitWidth=coverageWidth, ReferenceHeight=targetUAVElevation);
+cs = uavCoverageSpace(Polygons=regionVertices, UnitWidth=coverageWidth/6, ReferenceHeight=targetUAVElevation);
 
 % hold on
 % show(cs);
@@ -77,4 +92,4 @@ elevationTolerance = 15e-2;
 pitchTolerance = 2;
 rollVelocityTolerance = 1e-4;
 
-nthFrame = 20;
+nthFrame = 100;
